@@ -31,7 +31,13 @@ def start_RO_Signal():
                
         if  ROcheck == False:
             metrics.write_network_data_to_splunk(
-                "Linux-1", 2500 + random.randrange(ROseed))
+                "Linux-1", 2500 + random.randrange(ROseed) + ROGrowth)
+        elif  ROcheck == True:
+            ROGrowth=ROGrowth + 1
+            if ROGrowth==1:
+               print("Starting to Increase load")   
+            metrics.write_network_data_to_splunk(
+                "Linux-1", 2500 + random.randrange(ROseed) + ROGrowth)     
 
 def start_OD_Signal():
     random.seed()
