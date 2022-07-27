@@ -10,11 +10,35 @@ with open("config.yaml", "r") as ymlfile:
     cfg = yaml.safe_load(ymlfile)
 
 def start_Signal(signaltype):
+    if signaltype=="OD":
+        start_OD_Signal()
+    elif signaltype=="RO":
+        start_RO_Signal()
+
+def start_RO_Signal():
+    random.seed()
+    ROseed   = 150
+    ROGrowth = 10
+    print("Starting Resource Running Out Detection Signals ...")
+    while True:
+        try:
+            f=open ("Alerts/RO.alert","r")
+            org_path=os.path.realpath(f.name)
+            dest_path = os.path.join(os.path.dirname(os.path.realpath(f.name)),'RO.old.alert')
+            ROcheck = True
+        except FileNotFoundError:
+            ROcheck = False
+               
+        if  ROcheck == False:
+            metrics.write_network_data_to_splunk(
+                "Linux-1", 2500 + random.randrange(ROseed))
+
+def start_OD_Signal():
     random.seed()
     ODseed = 15
     ODMinute = 0
     ODcheck = False 
-    print(f"Starting signalType {signaltype} ...")
+    print("Starting Outlier Detection Signals ...")
     while True:
         try:
             f=open ("Alerts/OD.alert","r")

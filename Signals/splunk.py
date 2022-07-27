@@ -31,3 +31,15 @@ def write_outlier_data_to_splunk(server_name, cpu,memory):
             }
         ]
     )
+
+def write_network_data_to_splunk(server_name, bandwidth):
+    # logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+    ingest.send(
+        gauges=[
+            {
+                "metric": "demo.alerting.",
+                "value": bandwidth,
+                "dimensions": {"server": server_name},
+            }
+        ]
+    )

@@ -10,7 +10,6 @@ Create a config.yaml in the root directory that contains the following  where:
 
 ACCESS_TOKEN: xxx
 REALM: yyy
-OD_ALERT: False
 ```
 
 Set up your env by running the following to install the python dependencies and run the main app 
@@ -22,6 +21,13 @@ pip install -r requirements.txt
 python3 main.py
 ```
 
+## OUTLIER DETECTION
+
 To test an Outlier Detection, Run the OD signal from the main.py app.
 
-To Trigger the condition let  the app run for at least 10 minutes then change the value of OD_ALERT in the config.yal to True, and keep it set for at least one minute  ( you can set the alert  for 80% of 1 Minute)
+To Trigger the condition let  the app run for at least 10 minutes 
+then rename the OD.old.alert file in the *Alerts* subdirectory to OD.alert  (or create it if it doesn't exist)
+The app will then change one single to be an outlier  and keep it running at a lower number for a minute. 
+(you can see it count back)
+Set your outlier detection to have a trigger threshold of 2  and a duration of 80% of 1 minute
+the clear threshold is 1.4 again 80% of one minute
