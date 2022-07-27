@@ -12,7 +12,7 @@ def start_Signal(signaltype):
     print(f"Starting signalType {signaltype} ...")
  
     # Receive Packages
-    setHigh = False
+    setHigh = True
     while True:   
         time.sleep(10)
         if setHigh == True:
@@ -36,7 +36,7 @@ def start_Signal(signaltype):
                 "Linux-9",66, 454 )
             metrics.write_outlier_data_to_splunk(
                 "Linux-0",69, 728 )
-            setHigh = False    
+            #setHigh = False    
         else:        
             metrics.write_outlier_data_to_splunk(
                 "Linux-1", 60, 400)
