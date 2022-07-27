@@ -1,6 +1,6 @@
 # README
 
-Check out this repository and change into the directory `RaboSignals`
+Check out this repository and change into the directory `AlertingSignals`
 
 ```
 python3 -m venv venv

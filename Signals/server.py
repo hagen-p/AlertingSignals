@@ -1,5 +1,6 @@
 import socket
 import yaml
+import time
 import Signals.splunk as metrics
 
 
@@ -8,57 +9,51 @@ with open("config.yaml", "r") as ymlfile:
 
 
 def start_Signal(signaltype):
-    print(f"Driver {driver_name} started ...")
-    udp_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
-    udp_socket.bind(("", cfg["UDP_PORT"]))
-    print(f"Server IP Address: {socket.gethostbyname(socket.getfqdn())}")
-    print(f"Listening to Port {cfg['UDP_PORT']} on {udp_socket.getsockname()[0]} ...")
-    lastLap = 0  # force a new lap after we pass start finish
-    sector3TimeInS = 0
+    print(f"Starting signalType {signaltype} ...")
+ 
     # Receive Packages
-    while True:
-        udp_packet = udp_socket.recv(2048)
-        packet = unpack_udp_packet(udp_packet)
-
-        packet_type = packet.header.packetId  # get the packet type from the header
-        position = (
-            packet.header.playerCarIndex
-        )  # get the position of the driver in the list as the packet contains data of all driving cars
-
-        # LAP DATA
-        if packet_type == 2:
-            newLap = False
-            car_laptime_data = packet.lapData[position]
-            if car_laptime_data.currentLapNum > lastLap:
-                newLap = True
-                lastLap = car_laptime_data.currentLapNum
-                sector3TimeInS = car_laptime_data.lastLapTime - (
-                    car_laptime_data.sector1TimeInMS + car_laptime_data.sector1TimeInMS
-                )
-                print(f"Starting Lap {lastLap}...")
-            elif (
-                car_laptime_data.sector1TimeInMS == 0
-                and car_laptime_data.sector1TimeInMS == 0
-            ):
-                sector3TimeInS = 0
-            metrics.write_lap_data_to_splunk(
-                driver_name, car_laptime_data, sector3TimeInS
-            )
-
-        # TELEMETRY DATA
-        if packet_type == 6:
-            car_telemetry_data = packet.carTelemetryData[position]
-            metrics.write_telemetry_data_to_splunk(driver_name, car_telemetry_data)
-
-        # CAR STATUS DATA
-        if packet_type == 7:
-            car_status_data = packet.carStatusData[position]
-            metrics.write_car_status_data_to_splunk(driver_name, car_status_data)
-
-
-def indexExists(list,index):
-    try:
-        list[index]
-        return True
-    except IndexError:
-        return False
+    setHigh = False
+    while True:   
+        time.sleep(10)
+        if setHigh == True:
+            metrics.write_outlier_data_to_splunk(
+                "Linux-1",80, 1024 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-2",99, 2024 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-3",78, 1144 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-4",82, 1824 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-5",89, 1424 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-6",87, 1224 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-7",91, 3024 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-8",75, 1324 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-9",66, 454 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-0",69, 728 )
+            setHigh = False    
+        else:        
+            metrics.write_outlier_data_to_splunk(
+                "Linux-1", 60, 400)
+            metrics.write_outlier_data_to_splunk(
+                "Linux-2",55, 1024 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-3",78, 644 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-5",89, 824 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-6",87, 1024 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-7",80, 2046 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-8",34, 624 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-9",44, 354 )
+            metrics.write_outlier_data_to_splunk(
+                "Linux-0",69, 728 )
+            setHigh = True
