@@ -57,7 +57,9 @@ def start_OD_Signal():
     print("Starting Outlier Detection Signals ...")
     while True:
         try:
+            
             f=open ("Alerts/OD.alert","r")
+            #f=open(cfg['[ALERTDIR']+OD.alert)  # as an an idea
             org_path=os.path.realpath(f.name)
             dest_path = os.path.join(os.path.dirname(os.path.realpath(f.name)),'OD.old.alert')
             deviation = 40
