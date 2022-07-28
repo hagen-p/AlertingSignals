@@ -61,33 +61,39 @@ def start_OD_Signal():
             org_path=os.path.realpath(f.name)
             dest_path = os.path.join(os.path.dirname(os.path.realpath(f.name)),'OD.old.alert')
             deviation = 40
-            
+            print (60-ODMinute)       
+            ODMinute = ODMinute + 10
+            if ODMinute >= 60: # more then a minute has gone by    
+                os.rename(org_path, dest_path) #renaming the alert file to stop the Outlier
+                ODMinute = 0 #reset
+
         except FileNotFoundError:
             ODcheck = False
             deviation = 80
            #setHigh = False    
         
-            metrics.write_outlier_data_to_splunk(
-                "Linux-1",80 + random.randrange(ODseed), 1024 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-2",80 + random.randrange(ODseed), 2024 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-3",80 + random.randrange(ODseed), 1144 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-4",80 + random.randrange(ODseed), 1824 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-5",80 + random.randrange(ODseed), 1424 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-6",80 + random.randrange(ODseed), 1224 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-7",80 + random.randrange(ODseed), 3024 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-8",80 + random.randrange(ODseed), 1324 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-9",deviation + random.randrange(ODseed), 454 )
-            metrics.write_outlier_data_to_splunk(
-                "Linux-0",80 + random.randrange(ODseed), 728 )    
-        
+                 
+        metrics.write_outlier_data_to_splunk(
+            "Linux-1",80 + random.randrange(ODseed), 1024 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-2",80 + random.randrange(ODseed), 2024 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-3",80 + random.randrange(ODseed), 1144 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-4",80 + random.randrange(ODseed), 1824 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-5",80 + random.randrange(ODseed), 1424 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-6",80 + random.randrange(ODseed), 1224 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-7",80 + random.randrange(ODseed), 3024 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-8",80 + random.randrange(ODseed), 1324 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-9",deviation + random.randrange(ODseed), 454 )
+        metrics.write_outlier_data_to_splunk(
+            "Linux-0",80 + random.randrange(ODseed), 728 )    
+    
         time.sleep(10) # wait 10 second
        
 
