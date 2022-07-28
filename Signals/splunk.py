@@ -37,7 +37,7 @@ def write_network_data_to_splunk(server_name, bandwidth):
     ingest.send(
         gauges=[
             {
-                "metric": "demo.alerting.",
+                "metric": "demo.alerting.networkusage",
                 "value": bandwidth,
                 "dimensions": {"server": server_name},
             }

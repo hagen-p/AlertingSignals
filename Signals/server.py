@@ -23,22 +23,27 @@ def start_RO_Signal():
     while True:
         try:
             f=open ("Alerts/RO.alert","r")
-            org_path=os.path.realpath(f.name)
-            dest_path = os.path.join(os.path.dirname(os.path.realpath(f.name)),'RO.old.alert')
+            #org_path=os.path.realpath(f.name)
+            #dest_path = os.path.join(os.path.dirname(os.path.realpath(f.name)),'RO.old.alert')
             ROcheck = True
-        except FileNotFoundError:
-            ROcheck = False
-               
-        if  ROcheck == False:
-            metrics.write_network_data_to_splunk(
-                "Linux-1", 2500 + random.randrange(ROseed) + ROGrowth)
-        elif  ROcheck == True:
+            print(ROGrowth)
             ROGrowth=ROGrowth + 1
             if ROGrowth==1:
                print("Starting to Increase load")   
-            metrics.write_network_data_to_splunk(
-                "Linux-1", 2500 + random.randrange(ROseed) + ROGrowth)     
-
+        except FileNotFoundError:
+            ROcheck = False
+            
+        metrics.write_network_data_to_splunk(
+                "LBA-1", 2500 + random.randrange(ROseed)) 
+        metrics.write_network_data_to_splunk(
+                "LBA-2", 2530 + random.randrange(ROseed) + ROGrowth)
+        metrics.write_network_data_to_splunk(
+                "LBA-3", 2560 + random.randrange(ROseed))
+        metrics.write_network_data_to_splunk(
+                "LBA-4", 2590 + random.randrange(ROseed))          
+        
+        time.sleep(10) # wait 10 second
+       
 def start_OD_Signal():
     random.seed()
     ODseed = 15
